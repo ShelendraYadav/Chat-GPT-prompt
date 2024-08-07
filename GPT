@@ -1,0 +1,46 @@
+import json
+
+def parse_resume(resume_text):
+    resume_data = {
+        "contact_information": {},
+        "education": [],
+        "experience": [],
+        "skills": []
+    }
+
+    lines = resume_text.split('\n')
+    section = None
+
+    for line in lines:
+        line = line.strip()
+        
+        if line == "Contact Information":
+            section = "contact_information"
+        elif line == "Education":
+            section = "education"
+        elif line == "Experience":
+            section = "experience"
+        elif line == "Skills":
+            section = "skills"
+        else:
+            if section == "contact_information":
+                key, value = line.split(':', 1)
+                resume_data[section][key.strip()] = value.strip()
+            elif section == "education":
+                if line:
+                    resume_data[section].append(line)
+            elif section == "experience":
+                if line:
+                    resume_data[section].append(line)
+            elif section == "skills":
+                if line:
+                    resume_data[section].append(line)
+    
+    return resume_data
+
+# Replace 'resume.txt' with the path to your resume file
+with open('resume.txt', 'r') as file:
+    resume_text = file.read()
+
+resume_json = parse_resume(resume_text)
+print(json.dumps(resume_json, indent=4))
